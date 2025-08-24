@@ -8,6 +8,7 @@ const App = () => {
   const perPage = 10;
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [expandedAbstracts, setExpandedAbstracts] = useState({});
 
   const handleSearch = async (page = 1) => {
     if (!searchQuery.trim()) return;
@@ -15,6 +16,7 @@ const App = () => {
     setLoading(true);
     setError("");
     setCurrentPage(page);
+    setExpandedAbstracts({}); // Reset expanded abstracts on new search
 
     try {
       const response = await fetch(
@@ -30,8 +32,8 @@ const App = () => {
       const data = await response.json();
       setResults(data.results || []);
       setTotal(data.total || 0);
+      // eslint-disable-next-line no-unused-vars
     } catch (err) {
-      console.log(err);
       setError(
         "Failed to fetch search results. Please check your connection and try again."
       );
@@ -40,6 +42,13 @@ const App = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const toggleAbstract = (index) => {
+    setExpandedAbstracts((prev) => ({
+      ...prev,
+      [index]: !prev[index],
+    }));
   };
 
   const handleKeyPress = (e) => {
@@ -310,10 +319,18 @@ const App = () => {
               {report.abstract && (
                 <div className="mt-3">
                   <p className="text-gray-700 text-sm leading-relaxed">
-                    {report.abstract.length > 300
-                      ? `${report.abstract.substring(0, 300)}...`
-                      : report.abstract}
+                    {expandedAbstracts[index] || report.abstract.length <= 300
+                      ? report.abstract
+                      : `${report.abstract.substring(0, 300)}...`}
                   </p>
+                  {report.abstract.length > 300 && (
+                    <button
+                      onClick={() => toggleAbstract(index)}
+                      className="text-blue-600 hover:text-blue-800 text-sm font-medium mt-2 focus:outline-none"
+                    >
+                      {expandedAbstracts[index] ? "Read less" : "Read more"}
+                    </button>
+                  )}
                 </div>
               )}
             </div>
