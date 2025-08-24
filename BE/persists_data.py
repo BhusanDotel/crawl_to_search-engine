@@ -14,6 +14,9 @@ def save_to_db(link):
 def get_links_from_db():
     return [doc["link"] for doc in collection.find({}, {"link": 1})]
 
+def get_all_reports():
+    return [doc for doc in collection.find()]
+
 def update_to_db(detail):
     collection.update_one(
         {"link": detail.get("link"), "title": {"$exists": False}},

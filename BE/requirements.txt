@@ -1,0 +1,8 @@
+selenium
+webdriver-manager
+pymongo
+schedule
+scikit-learn
+fastapi
+pydantic
+uvicorn
