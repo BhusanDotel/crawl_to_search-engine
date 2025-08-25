@@ -1,9 +1,12 @@
 from fastapi import FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
 
+from schema.classify_doc_Schema import PredictResponse
 from schema.search_report_schema import Response_Body
 
+from service.train_test import classify_document
 from service.search_report import search_reports
+
 
 # ----------------- FastAPI App -----------------
 app = FastAPI(title="Report Search API")
@@ -33,3 +36,10 @@ async def search(q: str = Query(..., description="Search query"),
     paginated = _data[start:end]
 
     return Response_Body(results=paginated, total=len(_data))
+
+@app.get("/classify", response_model=PredictResponse)
+async def classify(q: str = Query(..., description="Classify Document")):
+
+    pred,probs = await classify_document(q)
+
+    return PredictResponse(predicted_category=pred, probabilities=probs)
