@@ -1,3 +1,13 @@
 {
-  "cSpell.words": ["Multinomial", "Tfidf", "vectorizer"]
+  "cSpell.words": [
+    "lemmatize",
+    "lemmatizer",
+    "Multinomial",
+    "punkt",
+    "stopwords",
+    "Tfidf",
+    "vectorizer",
+    "vectorizing",
+    "wordnet"
+  ]
 }
