@@ -13,7 +13,9 @@ export const ClassifyDocument = () => {
     setResult(null);
     try {
       const res = await fetch(
-        `http://127.0.0.1:8000/classify?q=${encodeURIComponent(query)}`
+        `https://crawl-to-search-engine.onrender.com/classify?q=${encodeURIComponent(
+          query
+        )}`
       );
       if (!res.ok) throw new Error("Classification failed");
       const data = await res.json();
