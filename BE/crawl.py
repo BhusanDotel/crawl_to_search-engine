@@ -36,10 +36,7 @@ def cookie_handler(driver):
 
 #=============== Scrape papers list =====================
 def scrape_paper_list(driver, url, page):
-    print("----"*10)
-
     paper_list=[]
-    print("page",page)
     driver.get(url)
     cookie_handler(driver)
 
@@ -119,17 +116,18 @@ def process_link(link):
 
 #=============== Start Crawl =====================
 def start_crawl():
-    # driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
-    # scrape_paper_list(driver, BASE_URL, 1)
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+    scrape_paper_list(driver, BASE_URL, 1)
+
     links = get_links_from_db()
     print(f"Total links to process: {len(links)}")
-    # total = len(links)
+    total = len(links)
 
-    # workers = min(10, cpu_count())  # 5 parallel browsers
+    workers = min(10, cpu_count())  # 10 parallel browsers
 
-    # with Pool(workers) as pool:
-    #     for i, _ in enumerate(pool.imap_unordered(process_link, links), 1):
-    #         print(f"Processed {i}/{total}")
+    with Pool(workers) as pool:
+        for i, _ in enumerate(pool.imap_unordered(process_link, links), 1):
+            print(f"Processed {i}/{total}")
 
 if __name__ == "__main__":
     start_crawl() 
