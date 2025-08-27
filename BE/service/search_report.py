@@ -1,8 +1,8 @@
+import json
 import re
 import nltk
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import TfidfVectorizer
-from persists_data import get_all_reports
 
 # ----------------- Download required NLTK resources -----------------
 nltk.download("punkt_tab")
@@ -39,7 +39,9 @@ def custom_tokenizer(text):
     return preprocess(text).split()
 
 # ----------------- Load Data -----------------
-data = get_all_reports()
+with open("data/publication_data.json", "r", encoding="utf-8") as f:
+    data = json.load(f)
+
 
 # Prepare documents for TF-IDF (title + abstract + authors)
 documents = []
